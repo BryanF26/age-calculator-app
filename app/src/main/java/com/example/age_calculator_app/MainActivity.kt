@@ -34,13 +34,15 @@ class MainActivity : AppCompatActivity() {
             val birthDateString = inputBirthDate.text.toString()
 
             if (birthDateString.isNotEmpty()) {
-                try {
-                    val (years, months, days) = calculateAge(birthDateString)
+                val birthDate = LocalDate.parse(birthDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+                if (birthDate.isAfter(LocalDate.now())) {
+                    Toast.makeText(this, "Birth date cannot be after today", Toast.LENGTH_LONG).show()
+                } else {
+                    val (years, months, days) = calculateAge(birthDate.toString())
                     yearData.text = "$years"
                     monthData.text = "$months"
                     dayData.text = "$days"
-                } catch (e: DateTimeParseException) {
-                    Toast.makeText(this, "Invalid date format. Use yyyy-MM-dd.", Toast.LENGTH_LONG).show()
                 }
             } else {
                 Toast.makeText(this, "Please enter a birthdate", Toast.LENGTH_LONG).show()
