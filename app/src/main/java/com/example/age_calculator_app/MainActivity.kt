@@ -39,10 +39,11 @@ class MainActivity : AppCompatActivity() {
                 if (birthDate.isAfter(LocalDate.now())) {
                     Toast.makeText(this, "Birth date cannot be after today", Toast.LENGTH_LONG).show()
                 } else {
-                    val (years, months, days) = calculateAge(birthDate.toString())
+                    val (years, months, days) = calculateAge(birthDate)
                     yearData.text = "$years"
                     monthData.text = "$months"
                     dayData.text = "$days"
+                    Toast.makeText(this, "Successful!", Toast.LENGTH_LONG).show()
                 }
             } else {
                 Toast.makeText(this, "Please enter a birthdate", Toast.LENGTH_LONG).show()
@@ -51,14 +52,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun calculateAge(birthDate: String): Triple<Int, Int, Int> {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
-        val birth = LocalDate.parse(birthDate, formatter)
-
+    private fun calculateAge(birthDate: LocalDate): Triple<Int, Int, Int> {
         val currentDate = LocalDate.now()
-
-        val period = Period.between(birth, currentDate)
+        val period = Period.between(birthDate, currentDate)
 
         return Triple(period.years, period.months, period.days)
     }
